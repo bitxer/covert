@@ -46,10 +46,11 @@ class HTTPListener:
         print(data)
 
 class TCPListener:
-    def __init__(self, key, filter='tcp port 4444'):
+    def __init__(self, key, port):
         print('Initialising TCP Listener')
         self._key = key
         self._data = ''
+        filter = 'tcp port {}'.format(port)
         sniff(filter=filter, prn=self._sniff)
 
     def _sniff(self, pkt):
@@ -190,7 +191,7 @@ def main(args):
     if proto == 'http':
         listen = HTTPListener()
     elif proto == 'tcp':
-        listen = TCPListener(args.key)
+        listen = TCPListener(args.key, port=args.port)
     elif proto == 'icmp':
         listen = ICMPListener(key=args.key)
     elif proto == 'dns':
